@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject, // Fill the entire background
-    backgroundColor: 'rgba(45, 45, 45, 0.95)', // Light white tint with 30% opacity
+    backgroundColor: 'rgba(45, 45, 45, 0.9)', // Light white tint with 30% opacity
   },
   headerContent: {
     flexDirection: 'row',

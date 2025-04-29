@@ -1,7 +1,7 @@
 import Header from '@/components/header';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
-import { Animated, Button, StyleSheet, Text, TouchableOpacity, View, Image, SafeAreaView } from 'react-native';
+import { Animated, Button, StyleSheet, Text, TouchableOpacity, View, Image, SafeAreaView, ImageBackground } from 'react-native';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -11,7 +11,7 @@ export default function App() {
   const flipScale = useRef(new Animated.Value(1)).current; // Animation scale for Flip Camera button
   const takePictureScale = useRef(new Animated.Value(1)).current; // Animation scale for Take Picture button
   const retakeScale = useRef(new Animated.Value(1)).current; // Animation scale for Retake button
-  const reverseCamera = require(require('../assets/images/reverseCamera.png')); // Image for reverse camera icon
+  const reverseCamera = require('../../assets/images/reverseCamera.png'); // Image for reverse camera icon
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -71,50 +71,43 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <SafeAreaView>
-          <Header />
-        </SafeAreaView>
-      </View>
-      <View style={styles.foregroundContainer}>
-        <View style={styles.cameraContainer}>
-          {photoUri ? (
-            <Image
-              source={{ uri: photoUri }}
-              style={styles.camera}
-              resizeMode="cover" // Ensure image fills the container
-            />
-          ) : (
-            <CameraView style={styles.camera} facing={facing} ref={cameraRef} />
-          )}
+    <ImageBackground
+      source={require('../../assets/images/PLBG.png')} // Same image as Header.tsx
+      style={styles.background}
+      resizeMode="cover"
+      blurRadius={5} // Matches Header.tsx
+    >
+      <View style={styles.overlay} />
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <SafeAreaView>
+            <Header />
+          </SafeAreaView>
         </View>
-        <View style={styles.buttonContainer}>
-          {photoUri ? (
-            <Animated.View style={[styles.button, { transform: [{ scale: retakeScale }] }]}>
-              <TouchableOpacity
-                onPress={retakeImage}
-                onPressIn={() => handlePressIn(retakeScale)}
-                onPressOut={() => handlePressOut(retakeScale)}
-              >
-                <Text style={styles.text}>Retake Image</Text>
-              </TouchableOpacity>
-            </Animated.View>
-          ) : (
-            <>
-              <Animated.View style={[styles.button, { transform: [{ scale: flipScale }] }]}>
+        <View style={styles.foregroundContainer}>
+          <View style={styles.cameraContainer}>
+            {photoUri ? (
+              <Image
+                source={{ uri: photoUri }}
+                style={styles.camera}
+                resizeMode="cover" // Ensure image fills the container
+              />
+            ) : (
+              <CameraView style={styles.camera} facing={facing} ref={cameraRef} />
+            )}
+          </View>
+          <View style={styles.buttonContainer}>
+            {photoUri ? (
+              <Animated.View style={[styles.button, { transform: [{ scale: retakeScale }] }]}>
                 <TouchableOpacity
-                  onPress={toggleCameraFacing}
-                  onPressIn={() => handlePressIn(flipScale)}
-                  onPressOut={() => handlePressOut(flipScale)}
+                  onPress={retakeImage}
+                  onPressIn={() => handlePressIn(retakeScale)}
+                  onPressOut={() => handlePressOut(retakeScale)}
                 >
-                          <Image
-                            source={reverseCamera}
-                            style={styles.reverseCamera}
-                          />
-                  <Text style={styles.text}>Flip Camera</Text>
+                  <Text style={styles.text}>Retake Image</Text>
                 </TouchableOpacity>
               </Animated.View>
+            ) : (
               <Animated.View style={[styles.button, { transform: [{ scale: takePictureScale }] }]}>
                 <TouchableOpacity
                   onPress={takePicture}
@@ -124,18 +117,42 @@ export default function App() {
                   <Text style={styles.text}>Take Picture</Text>
                 </TouchableOpacity>
               </Animated.View>
-            </>
+            )}
+          </View>
+          {!photoUri && (
+            <View style={styles.flipButtonContainer}>
+              <Animated.View style={[{ transform: [{ scale: flipScale }] }]}>
+                <TouchableOpacity
+                  onPress={toggleCameraFacing}
+                  onPressIn={() => handlePressIn(flipScale)}
+                  onPressOut={() => handlePressOut(flipScale)}
+                >
+                  <Image
+                    source={reverseCamera}
+                    style={styles.reverseCamera}
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
           )}
         </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject, // Fill the entire background
+    backgroundColor: 'rgba(45, 45, 45, 0.9)', // Matches Header.tsx overlay
+  },
+  background: {
+    flex: 1,
+    width: '100%',
+  },
   container: {
     flex: 1,
-    backgroundColor: 'transparent', // Transparent to show Header's background
+    backgroundColor: 'transparent', // Transparent to show ImageBackground
   },
   headerContainer: {
     position: 'absolute',
@@ -143,18 +160,18 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 1, // Lower z-index for background
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   safeArea: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   foregroundContainer: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 100, // Offset to avoid overlap with Header
+    marginTop: 110, // Offset to avoid overlap with Header
     zIndex: 2, // Higher z-index for foreground
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   message: {
     textAlign: 'center',
@@ -175,12 +192,18 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute', // Position at the bottom
-    bottom: 150, // Offset from the bottom
+    bottom: 120, // Offset from the bottom
     width: '100%', // Full width to center buttons
     flexDirection: 'row', // Arrange buttons horizontally
     justifyContent: 'center', // Center buttons horizontally
     alignItems: 'center', // Align buttons vertically
     backgroundColor: 'transparent',
+  },
+  flipButtonContainer: {
+    position: 'absolute',
+    top: 10, // Align with top of CameraView (marginTop: 110 + padding)
+    right: 30, // Position inside CameraView's right edge
+    zIndex: 3, // Ensure it’s above CameraView
   },
   button: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent dark background
@@ -201,7 +224,7 @@ const styles = StyleSheet.create({
     color: '#fff', // White text
   },
   reverseCamera: {
-    width: 50,
-    height: 50,
-  }
+    width: 60,
+    height: 60,
+  },
 });
