@@ -11,6 +11,7 @@ export default function App() {
   const flipScale = useRef(new Animated.Value(1)).current; // Animation scale for Flip Camera button
   const takePictureScale = useRef(new Animated.Value(1)).current; // Animation scale for Take Picture button
   const retakeScale = useRef(new Animated.Value(1)).current; // Animation scale for Retake button
+  const reverseCamera = require(require('../assets/images/reverseCamera.png')); // Image for reverse camera icon
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -107,6 +108,10 @@ export default function App() {
                   onPressIn={() => handlePressIn(flipScale)}
                   onPressOut={() => handlePressOut(flipScale)}
                 >
+                          <Image
+                            source={reverseCamera}
+                            style={styles.reverseCamera}
+                          />
                   <Text style={styles.text}>Flip Camera</Text>
                 </TouchableOpacity>
               </Animated.View>
@@ -195,4 +200,8 @@ const styles = StyleSheet.create({
     fontWeight: '600', // Medium-bold text
     color: '#fff', // White text
   },
+  reverseCamera: {
+    width: 50,
+    height: 50,
+  }
 });
