@@ -1,7 +1,7 @@
 import Header from '@/components/header';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
-import { Animated, Button, StyleSheet, Text, TouchableOpacity, View, Image, SafeAreaView, ImageBackground } from 'react-native';
+import { Animated, Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');

@@ -65,13 +65,13 @@ const iconStyles = {
     },
     news: {
         unfocused: {
-            width: 36,
-            height: 36,
+            width: 40,
+            height: 40,
             tintColor: 'white',
         },
         focused: {
-            width: 36,
-            height: 36,
+            width: 40,
+            height: 40,
             tintColor: 'black',
         },
     },
@@ -92,7 +92,7 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, title, name }) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: 50,
-                    overflow: 'hidden'
+                    overflow: 'hidden',
                 }}
             >
                 <Image
@@ -176,7 +176,7 @@ const _layout = () => {
                     tabBarIcon: ({ focused }) => (
                         <TabIcon
                             focused={focused}
-                            icon={icons.map} // Update to icons.map when available
+                            icon={icons.map}
                             title="Map"
                             name="map"
                         />
