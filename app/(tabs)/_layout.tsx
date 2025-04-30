@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native'
+import { View, Text, ImageBackground, Image } from 'react-native'
 import React from 'react'
 import { images } from "@/constants/images"
 import { Tabs } from 'expo-router'
@@ -28,50 +28,50 @@ const iconStyles = {
     },
     map: {
         unfocused: {
-            width: 28,
-            height: 28,
+            width: 36,
+            height: 36,
             tintColor: 'white',
         },
         focused: {
-            width: 28,
-            height: 28,
+            width: 36,
+            height: 36,
             marginleft: 20,
             tintColor: 'black',
         },
     },
     camera: {
         unfocused: {
-            width: 28,
-            height: 28,
+            width: 36,
+            height: 36,
             tintColor: 'white',
         },
         focused: {
-            width: 28,
-            height: 28,
+            width: 36,
+            height: 36,
             tintColor: 'black',
         },
     },
     activities: {
         unfocused: {
-            width: 28,
-            height: 28,
+            width: 36,
+            height: 36,
             tintColor: 'white',
         },
         focused: {
-            width: 28,
-            height: 28,
+            width: 36,
+            height: 36,
             tintColor: 'black',
         },
     },
     news: {
         unfocused: {
-            width: 28,
-            height: 28,
+            width: 36,
+            height: 36,
             tintColor: 'white',
         },
         focused: {
-            width: 28,
-            height: 28,
+            width: 36,
+            height: 36,
             tintColor: 'black',
         },
     },
@@ -191,7 +191,7 @@ const _layout = () => {
                     tabBarIcon: ({ focused }) => (
                         <TabIcon
                             focused={focused}
-                            icon={icons.person} // Update to icons.camera when available
+                            icon={icons.camera}
                             title="Camera"
                             name="camera"
                         />
@@ -206,7 +206,7 @@ const _layout = () => {
                     tabBarIcon: ({ focused }) => (
                         <TabIcon
                             focused={focused}
-                            icon={icons.person} // Update to icons.activities when available
+                            icon={icons.activities}
                             title="Activities"
                             name="activities"
                         />
@@ -221,7 +221,7 @@ const _layout = () => {
                     tabBarIcon: ({ focused }) => (
                         <TabIcon
                             focused={focused}
-                            icon={icons.person} // Update to icons.news when available
+                            icon={icons.news}
                             title="News"
                             name="news"
                         />
