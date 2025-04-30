@@ -23,9 +23,9 @@ export default function App() {
     return (
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <SafeAreaView style={styles.safeArea}>
+          {/* <SafeAreaView style={styles.safeArea}> */}
             <Header />
-          </SafeAreaView>
+          {/* </SafeAreaView> */}
         </View>
         <View style={styles.foregroundContainer}>
           <Text style={styles.message}>We need your permission to show the camera</Text>
@@ -80,9 +80,9 @@ export default function App() {
       <View style={styles.overlay} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <SafeAreaView>
+          {/* <SafeAreaView> */}
             <Header />
-          </SafeAreaView>
+          {/* </SafeAreaView> */}
         </View>
         <View style={styles.foregroundContainer}>
           <View style={styles.cameraContainer}>
@@ -223,8 +223,8 @@ const styles = StyleSheet.create({
     fontWeight: '600', // Medium-bold text
     color: '#fff', // White text
   },
-  reverseCamera: {
-    width: 60,
-    height: 60,
+  reverseCamera: { //reverseCamera icon size
+    width: 70,
+    height: 70,
   },
 });

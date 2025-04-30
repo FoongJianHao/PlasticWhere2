@@ -6,14 +6,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const maps = () => {
     return (
-        <SafeAreaView>
+        <View>
             <Header />
-            <SafeAreaView>
-                <View>
-                    <Text>maps</Text>
-                </View>
-            </SafeAreaView>
-        </SafeAreaView>
+            <Text>maps</Text>
+        </View>
 
     )
 }

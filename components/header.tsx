@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     zIndex: 1, // Bring content above overlay
+    backgroundColor: 'transparent', // Ensure background is transparent
+    marginTop: 40,
   },
   logo: {
     width: 50,

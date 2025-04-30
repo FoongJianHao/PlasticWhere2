@@ -5,16 +5,10 @@ import Header from '@/components/header';
 
 const news = () => {
     return (
-        <SafeAreaView>
+        <View>
             <Header />
-            <SafeAreaView>
-                <View>
-                    <Text>news</Text>
-                </View>
-            </SafeAreaView>
-
-        </SafeAreaView>
-
+            <Text>news</Text>
+        </View>
     )
 }
 
