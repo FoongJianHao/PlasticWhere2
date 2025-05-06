@@ -35,7 +35,6 @@ const iconStyles = {
         focused: {
             width: 36,
             height: 36,
-            marginleft: 20,
             tintColor: 'black',
         },
     },
@@ -65,13 +64,13 @@ const iconStyles = {
     },
     news: {
         unfocused: {
-            width: 40,
-            height: 40,
+            width: 36,
+            height: 36,
             tintColor: 'white',
         },
         focused: {
-            width: 40,
-            height: 40,
+            width: 36,
+            height: 36,
             tintColor: 'black',
         },
     },
@@ -103,7 +102,6 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, title, name }) => {
                     style={{
                         fontSize: 16,
                         fontWeight: "600",
-                        marginLeft: 0
                     }}
                 >
                     {title}
@@ -154,7 +152,7 @@ const _layout = () => {
         >
             {/* Hide header */}
             <Tabs.Screen
-            name="index"
+                name="index"
                 options={{
                     title: 'Home',
                     headerShown: false,

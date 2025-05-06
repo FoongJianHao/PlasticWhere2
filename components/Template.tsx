@@ -1,12 +1,12 @@
-// components/Header.tsx
+// components/Template.tsx
 import { View, Text, Image, ImageBackground, StyleSheet } from 'react-native';
 
-export default function Header() {
+export default function Template() {
   const logo = require('../assets/images/logo.png'); // Import the logo image
 
   return (
     <ImageBackground
-      source={require('../assets/images/PLBG.png')}
+     source={require('../assets/images/PLBG.png')}
       style={styles.background}
       resizeMode="cover"
       blurRadius={5} // Stronger blur
@@ -15,7 +15,7 @@ export default function Header() {
       <View style={styles.overlay} />
 
       {/* Foreground: Logo + Title */}
-      <View style={styles.headerContent}>
+      <View style={styles.templateContent}>
         <Image
           source={logo}
           style={styles.logo}
@@ -28,14 +28,15 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   background: {
+    // backgroundColor: 'transparent', // Ensure background is transparent
     width: '100%',
     height: '100%',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject, // Fill the entire background
-    backgroundColor: 'rgba(45, 45, 45, 0.9)', // Light white tint with 30% opacity
+    backgroundColor: 'rgba(45, 45, 45, 0.9)', // Dark tint with 90% opacity
   },
-  headerContent: {
+  templateContent: {
     flexDirection: 'row',
     alignItems: 'center',
     zIndex: 1, // Bring content above overlay
@@ -52,6 +53,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 5,
-    color: 'white', // Black text looks better on lighter overlay
+    color: 'white',
   },
 });

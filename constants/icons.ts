@@ -10,6 +10,7 @@ import map from "@/assets/icons/map.png"; // Added map icon
 import camera from "@/assets/icons/camera.png";
 import activities from "@/assets/icons/activities.png";
 import news from "@/assets/icons/news.png";
+import getMyLocation from "@/assets/icons/getMyLocation.png"; // Added getMyLocation icon
 
 export const icons = {
   home,
@@ -24,4 +25,5 @@ export const icons = {
   camera,
   activities,
   news,
+  getMyLocation,
 };

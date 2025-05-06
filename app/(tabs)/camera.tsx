@@ -1,4 +1,4 @@
-import Header from '@/components/header';
+import Template from '@/components/Template';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Animated, Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
@@ -22,9 +22,9 @@ export default function App() {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
+        <View style={styles.templateContainer}>
           {/* <SafeAreaView style={styles.safeArea}> */}
-            <Header />
+            <Template />
           {/* </SafeAreaView> */}
         </View>
         <View style={styles.foregroundContainer}>
@@ -72,16 +72,16 @@ export default function App() {
 
   return (
     <ImageBackground
-      source={require('../../assets/images/PLBG.png')} // Same image as Header.tsx
+      source={require('../../assets/images/PLBG.png')} // Same image as Template.tsx
       style={styles.background}
       resizeMode="cover"
-      blurRadius={5} // Matches Header.tsx
+      blurRadius={5} // Matches Template.tsx
     >
       <View style={styles.overlay} />
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
+        <View style={styles.templateContainer}>
           {/* <SafeAreaView> */}
-            <Header />
+            <Template />
           {/* </SafeAreaView> */}
         </View>
         <View style={styles.foregroundContainer}>
@@ -144,7 +144,7 @@ export default function App() {
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject, // Fill the entire background
-    backgroundColor: 'rgba(45, 45, 45, 0.9)', // Matches Header.tsx overlay
+    backgroundColor: 'rgba(45, 45, 45, 0.9)', // Matches Template.tsx overlay
   },
   background: {
     flex: 1,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent', // Transparent to show ImageBackground
   },
-  headerContainer: {
+  templateContainer: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 110, // Offset to avoid overlap with Header
+    marginTop: 110, // Offset to avoid overlap with Template
     zIndex: 2, // Higher z-index for foreground
     backgroundColor: 'transparent',
   },
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16, // Standard button text size
     fontWeight: '600', // Medium-bold text
-    color: '#fff', // White text
+    color: 'white', // White text
   },
   reverseCamera: { //reverseCamera icon size
     width: 70,

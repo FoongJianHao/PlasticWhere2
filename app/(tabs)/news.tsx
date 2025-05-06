@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '@/components/header';
+import Template from '@/components/Template';
 
 const news = () => {
     return (
         <View>
-            <Header />
+            <Template />
             <Text>news</Text>
         </View>
     )

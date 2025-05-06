@@ -1,202 +1,139 @@
-// import React from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-// import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-// import Header from '@/components/header';
-
-// const now = new Date();
-// const month = now.toLocaleString('en-US', { month: 'long' });
-// const currentYear = now.getFullYear();
-// const previousYear = currentYear - 1;
-
-// export default function Activities() {
-//     return (
-//         <ImageBackground
-//             source={require('../../assets/images/PLBG.png')} // Same image as Header.tsx
-//             style={styles.background}
-//             // resizeMode="cover"
-//             // blurRadius={5} // Matches Header.tsx
-//         >
-//             {/* Semi-transparent grey overlay to match Header.tsx */}
-//             <View style={styles.overlay} />
-//             {/* <SafeAreaView style={styles.safeArea}> */}
-//                 <View style={styles.headerWrapper}>
-//                     <Header />
-//                 </View>
-//                 <ScrollView contentContainerStyle={styles.scrollContainer}>
-//                     <View style={styles.container}>
-//                         {/* Header Section */}
-//                         <View style={styles.header}>
-//                             <Text style={styles.headerText}>Activities & Impacts</Text>
-//                         </View>
-
-//                         {/* Main Content Section */}
-//                         <View style={styles.mainContent}>
-//                             <Text style={styles.contentText}>Total Global Litter Content:</Text>
-//                             <Text style={styles.contentText}>Pick Up:</Text>
-//                             <Text style={styles.overallPickupText}>
-//                                 Overall Pickup for {month} {previousYear} - {currentYear}:
-//                             </Text>
-//                             <Text style={styles.pickupNumber}>945</Text>
-//                         </View>
-
-//                         {/* Footer Section */}
-//                         <View style={styles.footer}>
-//                             <Text style={styles.footerText}>Footer Section</Text>
-//                         </View>
-//                     </View>
-//                 </ScrollView>
-//             {/* </SafeAreaView> */}
-//         </ImageBackground>
-//     );
-// }
-
-// const styles = StyleSheet.create({
-//     background: {
-//         flex: 1,
-//         width: '100%',
-//     },
-//     overlay: {
-//         ...StyleSheet.absoluteFillObject, // Fill the entire background
-//         backgroundColor: 'rgba(45, 45, 45, 0.95)', // Matches Header.tsx overlay
-//     },
-//     safeArea: {
-//         flex: 1,
-//         backgroundColor: 'transparent', // Transparent to show ImageBackground
-//     },
-//     headerWrapper: {
-//         height: 60, // Constrains Header height
-//         width: '100%',
-//         overflow: 'hidden', // Clips Header content to fixed height
-//         backgroundColor: 'transparent', // Ensures no background color is applied
-//     },
-//     scrollContainer: {
-//         flexGrow: 1, // Ensures ScrollView content takes full height
-//     },
-//     container: {
-//         flex: 1,
-//     },
-//     header: {
-//         paddingVertical: 20, // Reduced from 100 for better spacing
-//         paddingHorizontal: 20,
-//         justifyContent: 'center',
-//     },
-//     headerText: {
-//         color: 'red', // Set to red as requested
-//         fontSize: 30,
-//         fontWeight: '600', // Numeric weight for compatibility
-//     },
-//     mainContent: {
-//         flex: 3, // Adjusted for better space distribution
-//         padding: 20,
-//     },
-//     contentText: {
-//         color: 'red', // Set to red as requested
-//         fontSize: 20,
-//         alignSelf: 'flex-end',
-//         marginRight: 20, // Responsive margin instead of paddingRight: 150
-//         marginVertical: 10,
-//     },
-//     overallPickupText: {
-//         color: 'red', // Set to red as requested
-//         fontSize: 22,
-//         alignSelf: 'center',
-//         marginTop: 30,
-//     },
-//     pickupNumber: {
-//         color: 'red', // Set to red as requested
-//         fontSize: 50,
-//         fontWeight: 'bold',
-//         alignSelf: 'center',
-//         marginTop: 10,
-//     },
-//     footer: {
-//         padding: 20,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//     },
-//     footerText: {
-//         color: 'red', // Set to red as requested
-//         fontSize: 20,
-//     },
-// });
-
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import Header from '@/components/header';
+import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import Template from '@/components/Template';
 
+const { width } = Dimensions.get('window');
 const now = new Date();
 const month = now.toLocaleString('en-US', { month: 'long' });
 const currentYear = now.getFullYear();
 const previousYear = currentYear - 1;
+const pickupCount = 945; // Example pickup count, replace with actual data
+const totalGlobalLitterReported = 283596; // Example total global litter content, replace with actual data
+const totalGlobalLitterPickUp = 195056
+const myMonthlyLitterReported = 43; // Example monthly litter reported, replace with actual data
+const myMonthlyLitterPickUp = 25; // Example monthly litter pickup, replace with actual data
 
-export default function Activities() {
-    const insets = useSafeAreaInsets();
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+export default function Reports() {
     return (
-        // <SafeAreaView style={styles.screen}>
-        <View>
-            <Header/>
-            {/* <View style={[styles.textContainer, { marginTop: 60 + insets.top }]}>
-                <Text style={styles.headerText}>Activities & Impacts</Text>
-                <Text style={styles.contentText}>Total Global Litter Content:</Text>
-                <Text style={styles.contentText}>Pick Up:</Text>
-                <Text style={styles.overallPickupText}>
-                    Overall Pickup for {month} {previousYear} - {currentYear}:
-                </Text>
-                <Text style={styles.pickupNumber}>945</Text>
-                <Text style={styles.footerText}>Footer Section</Text>
-            </View> */}
-            <Text>hi</Text>
+        <View style={styles.container}>
+            <View style={styles.templateContainer}>
+                <Template />
+            </View>
         </View>
-        // </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    screen: {
+    container: {
         flex: 1,
-        backgroundColor: 'transparent',
     },
-    header: {
-        position: 'absolute',
+    templateContainer: {
+        position: 'absolute', // THIS IS IMPORTANT TO MAKE THE TEMPLATE STAY IN THE BACKGROUND
+        top: 0,
         left: 0,
         right: 0,
-        zIndex: 1,
+        bottom: 0, // Extend to the bottom of the screen
+        backgroundColor: 'transparent', // Keep transparent
+        zIndex: 1, // Ensure Template is below the text
     },
-    textContainer: {
-        paddingHorizontal: 20,
-        backgroundColor: 'rgba(0, 255, 0, 0.2)', // Temporary debug background
+    headerContainer: {
+        marginTop: 120, // Space below the logo/title from Template
+        zIndex: 2,
+        // backgroundColor: 'rgba(226, 130, 130, 0.75)', // Temporary
     },
-    headerText: {
-        color: 'red',
-        fontSize: 30,
-        fontWeight: '600',
+    horizontalLine: {
+        height: 4, // Slightly thicker for better visibility
+        backgroundColor: 'rgba(30, 30, 30, 0.9)', // Changed to black
+        width: '100%',
+        zIndex: 2, // Ensure line is above the Template
     },
-    contentText: {
-        color: 'red',
-        fontSize: 20,
-        alignSelf: 'flex-end',
-        marginRight: 20,
-        marginVertical: 10,
+    contentContainer: {
+        flex: 1,
+        zIndex: 2,
+        // backgroundColor: 'rgba(143, 65, 65, 0.75)', // Temporary
     },
-    overallPickupText: {
-        color: 'red',
-        fontSize: 22,
-        alignSelf: 'center',
-        marginTop: 30,
+    totalGlobalLitterContainer: {
+        flex: 1.5,
+        justifyContent: 'center',
+        // backgroundColor: 'rgba(190, 74, 74, 0.75)', // Temporary
     },
-    pickupNumber: {
-        color: 'red',
-        fontSize: 50,
-        fontWeight: 'bold',
-        alignSelf: 'center',
-        marginTop: 10,
+    overallPickupContainer: {
+        flex: 1.5,
+        zIndex: 2,
+        // backgroundColor: 'rgba(78, 38, 94, 0.75)', // Temporary
     },
-    footerText: {
-        color: 'red',
+    barChartContainer: {
+        flex: 3,
+        zIndex: 2,
+        // backgroundColor: 'rgba(182, 120, 125, 0.75)', // Temporary 
+        justifyContent: 'flex-end'
+    },
+    monthsScrollView: {
+        flexGrow: 0,
+    },
+    monthsContentContainer: {
+        alignItems: 'center',
+    },
+    monthItem: {
+        width: width / 6, // Show 5 months at a time
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        alignItems: 'center',
+        marginBottom: 50,
+    },
+    monthText: {
+        color: 'white',
         fontSize: 20,
         textAlign: 'center',
-        padding: 20,
     },
+    myMonthlyLitterContainer: {
+        flex: 2.5,
+        zIndex: 2,
+        // backgroundColor: 'rgba(94, 75, 182, 0.75)', // Temporary
+    },
+    headerText: {
+        color: 'white',
+        fontSize: 36,
+        fontWeight: '600',
+        marginBottom: 10,
+        marginLeft: 20,
+    },
+    totalGlobalLitterText: {
+        color: 'white',
+        fontSize: 20,
+        alignSelf: 'flex-end',
+        marginRight: 40,
+    },
+    overallPickupText: {
+        color: 'white',
+        fontSize: 20,
+        alignSelf: 'center',
+        marginTop: 15,
+    },
+    pickupNumber: {
+        color: 'white',
+        fontSize: width * 0.12,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        marginTop: width * 0.025,
+    },
+    myMonthlyLitterText: {
+        color: 'white',
+        fontSize: width * 0.05,
+        alignSelf: 'flex-end',
+        marginRight: 80,
+        marginTop: 5,
+    },
+    shadowEffect: {
+        textShadowColor: 'rgba(0, 0, 0, 0.8)', // Add shadow for readability
+        textShadowOffset: { width: 1.5, height: 1.5 },
+        textShadowRadius: 5,
+    },
+    enlargeNumbers: {
+        fontSize: 28,
+        fontWeight: '500',
+        color: 'white'
+    }
 });
