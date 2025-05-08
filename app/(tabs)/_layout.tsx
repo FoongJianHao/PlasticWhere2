@@ -14,15 +14,16 @@ interface TabIconProps {
 
 // Define styles for each icon in focused and unfocused states
 const iconStyles = {
+    // Controlling the bar chart icon's size
     home: {
         unfocused: {
-            width: 50,
-            height: 50,
+            width:36,
+            height: 36,
             tintColor: 'white',
         },
         focused: {
-            width: 50,
-            height: 50,
+            width: 36,
+            height: 36,
             tintColor: 'black',
         },
     },
@@ -50,15 +51,16 @@ const iconStyles = {
             tintColor: 'black',
         },
     },
+    // Controlling the home icon's size
     activities: {
         unfocused: {
-            width: 36,
-            height: 36,
+            width: 50,
+            height: 50,
             tintColor: 'white',
         },
         focused: {
-            width: 36,
-            height: 36,
+            width: 50,
+            height: 50,
             tintColor: 'black',
         },
     },
@@ -85,8 +87,8 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, title, name }) => {
                 source={images.highlight}
                 style={{
                     flexDirection: 'row',
-                    minWidth: 112,
-                    minHeight: 56,
+                    width: 112,
+                    height: 56,
                     marginTop: 17.5,
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -150,18 +152,17 @@ const _layout = () => {
                 }
             }}
         >
-            {/* Hide header */}
             <Tabs.Screen
-                name="index"
+                name="activities"
                 options={{
-                    title: 'Home',
+                    title: 'Activities',
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
                         <TabIcon
                             focused={focused}
                             icon={icons.home}
-                            title="Home"
-                            name="home"
+                            title="Activities"
+                            name="activities"
                         />
                     )
                 }}
@@ -197,20 +198,21 @@ const _layout = () => {
                 }}
             />
             <Tabs.Screen
-                name="activities"
+                name="index"
                 options={{
-                    title: 'Activities',
+                    title: 'Home',
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
                         <TabIcon
                             focused={focused}
                             icon={icons.activities}
-                            title="Activities"
-                            name="activities"
+                            title="Home"
+                            name="home"
                         />
                     )
                 }}
             />
+
             <Tabs.Screen
                 name="news"
                 options={{

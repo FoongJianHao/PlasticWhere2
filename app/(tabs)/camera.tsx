@@ -24,7 +24,7 @@ export default function App() {
       <View style={styles.container}>
         <View style={styles.templateContainer}>
           {/* <SafeAreaView style={styles.safeArea}> */}
-            <Template />
+          <Template />
           {/* </SafeAreaView> */}
         </View>
         <View style={styles.foregroundContainer}>
@@ -81,7 +81,7 @@ export default function App() {
       <View style={styles.container}>
         <View style={styles.templateContainer}>
           {/* <SafeAreaView> */}
-            <Template />
+          <Template />
           {/* </SafeAreaView> */}
         </View>
         <View style={styles.foregroundContainer}>

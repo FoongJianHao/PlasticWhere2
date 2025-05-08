@@ -28,77 +28,77 @@ export default function Map() {
     }
   }
 
-  // Get current location with animated transition
+  const animateMap = (region, duration) => {
+    return new Promise((resolve) => {
+      if (mapRef.current) {
+        mapRef.current.animateToRegion(region, duration);
+        setTimeout(resolve, duration);
+      } else {
+        resolve();
+      }
+    });
+  };
+  
   const getCurrentLocation = async () => {
-    setIsLoading(true); // Show loading state
+    setIsLoading(true);
     const hasPermission = await requestLocationPermission();
     if (!hasPermission) {
       Alert.alert('Location Permission Denied', "Location permission is required to show your position.");
       setIsLoading(false);
       return;
     }
-
+  
     try {
-      // Step 1: Zoom out from the current view
-      if (mapRef.current) {
-        mapRef.current.animateCamera(
-          {
-            center: { latitude: region.latitude, longitude: region.longitude },
-            heading: 0,
-            pitch: 0,
-            zoom: 2, // Zoom out to a global view
-          },
-          { duration: 1000 }
-        );
-      }
-
-      // Fetch actual location in the background
-      const { coords } = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
-        timeInterval: 5000,
-        distanceInterval: 5000,
+      // Start location fetch immediately
+      const locationPromise = Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
       });
+  
+      // Step 1: Zoom out
+      await animateMap(
+        {
+          latitude: region.latitude,
+          longitude: region.longitude,
+          latitudeDelta: 50,
+          longitudeDelta: 50,
+        },
+        1500
+      );
+  
+      // Wait for location fetch to complete
+      const { coords } = await locationPromise;
       const { latitude, longitude } = coords;
-
-      // Update location state
       setLocation({ latitude, longitude });
-
-      // Step 2: Rotate to the user's location while zoomed out (after zoom out completes)
-      setTimeout(() => {
-        if (mapRef.current) {
-          mapRef.current.animateCamera(
-            {
-              center: { latitude, longitude },
-              heading: 0, // North-up orientation
-              pitch: 0,
-              zoom: 2, // Maintain zoomed-out view during rotation
-            },
-            { duration: 1000 }
-          );
-        }
-      }, 1000);
-
-      // Step 3: Zoom in to the current location (after rotation completes)
-      setTimeout(() => {
-        if (mapRef.current) {
-          mapRef.current.animateCamera(
-            {
-              center: { latitude, longitude },
-              heading: 0,
-              pitch: 0,
-              zoom: 15, // Zoom in to a close view
-            },
-            { duration: 1000 }
-          );
-        }
-        setRegion({
+  
+      // Step 2: Move to location
+      await animateMap(
+        {
+          latitude,
+          longitude,
+          latitudeDelta: 50,
+          longitudeDelta: 50,
+        },
+        1500
+      );
+  
+      // Step 3: Zoom in
+      await animateMap(
+        {
           latitude,
           longitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
-        });
-        setIsLoading(false); // Hide loading state
-      }, 2000);
+        },
+        1500
+      );
+  
+      setRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+      setIsLoading(false);
     } catch (error) {
       Alert.alert('Error', error.message);
       setIsLoading(false);
@@ -153,9 +153,6 @@ export default function Map() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    // padding: 20,
-    alignItems: 'center',
   },
   templateContainer: {
     position: 'absolute',
