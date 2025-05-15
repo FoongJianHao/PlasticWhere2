@@ -3,14 +3,40 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Animated, Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getStorage, ref } from "firebase/storage";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCla7gYr0TU4W6FjrXrqoP0cuWQDjGIOVk",
+  authDomain: "plasticwhere-e55a0.firebaseapp.com",
+  projectId: "plasticwhere-e55a0",
+  storageBucket: "plasticwhere-e55a0.firebasestorage.app",
+  messagingSenderId: "142116929131",
+  appId: "1:142116929131:web:7e8552652379eb31b1bb2e",
+  measurementId: "G-ZHYFYGWBP2"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const storage = getStorage(app);
+
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [photoUri, setPhotoUri] = useState<string | null>(null); // State to store the photo URI
+  const [image, setImage] = useState(''); // State for Firebase upload
   const cameraRef = useRef<CameraView>(null); // Reference to CameraView
   const flipScale = useRef(new Animated.Value(1)).current; // Animation scale for Flip Camera button
   const takePictureScale = useRef(new Animated.Value(1)).current; // Animation scale for Take Picture button
   const retakeScale = useRef(new Animated.Value(1)).current; // Animation scale for Retake button
+  const submitScale = useRef(new Animated.Value(1)).current; // Animation scale for Submit button
   const reverseCamera = require('../../assets/images/reverseCamera.png'); // Image for reverse camera icon
 
   if (!permission) {
@@ -40,12 +66,38 @@ export default function App() {
   }
 
   async function takePicture() {
-    if (cameraRef.current) {
+    if (!cameraRef.current) {
+      console.error('Camera ref is null');
+      return;
+    }
+    try {
+      console.log('Taking picture with cameraRef:', cameraRef.current);
+      const photo = await cameraRef.current.takePictureAsync({ quality: 0.8 });
+      console.log('Photo captured:', photo);
+      if (photo && photo.uri) {
+        setPhotoUri(photo.uri);
+        setImage(photo.uri);
+      } else {
+        console.error('Photo or photo.uri is undefined');
+      }
+    } catch (error) {
+      console.error('Failed to take picture:', error);
+    }
+  }
+
+  async function submitImage() {
+    if (image) {
       try {
-        const photo = await cameraRef.current.takePictureAsync({ quality: 0.8 });
-        setPhotoUri(photo.uri); // Store the photo URI
-      } catch (error) {
-        console.error('Failed to take picture:', error);
+        const fileName = `https://console.firebase.google.com/u/0/project/plasticwhere-e55a0/storage/plasticwhere-e55a0.firebasestorage.app/files` // Unique file name
+        const storageRef = storage.ref(fileName); // Firebase Storage reference
+        await storageRef.putFile(image); // Upload local file
+        const downloadURL = await storageRef.getDownloadURL(); // Get URL
+        console.log('Photo uploaded to Firebase:', downloadURL);
+        setPhotoUri(null); // Clear photo to show camera
+        setImage('');
+      }
+      catch (error) {
+        console.error('Failed to upload to Firebase:', error)
       }
     }
   }
@@ -80,9 +132,7 @@ export default function App() {
       <View style={styles.overlay} />
       <View style={styles.container}>
         <View style={styles.templateContainer}>
-          {/* <SafeAreaView> */}
           <Template />
-          {/* </SafeAreaView> */}
         </View>
         <View style={styles.foregroundContainer}>
           <View style={styles.cameraContainer}>
@@ -98,15 +148,26 @@ export default function App() {
           </View>
           <View style={styles.buttonContainer}>
             {photoUri ? (
-              <Animated.View style={[styles.button, { transform: [{ scale: retakeScale }] }]}>
-                <TouchableOpacity
-                  onPress={retakeImage}
-                  onPressIn={() => handlePressIn(retakeScale)}
-                  onPressOut={() => handlePressOut(retakeScale)}
-                >
-                  <Text style={styles.text}>Retake Image</Text>
-                </TouchableOpacity>
-              </Animated.View>
+              <>
+                <Animated.View style={[styles.button, { transform: [{ scale: retakeScale }] }]}>
+                  <TouchableOpacity
+                    onPress={retakeImage}
+                    onPressIn={() => handlePressIn(retakeScale)}
+                    onPressOut={() => handlePressOut(retakeScale)}
+                  >
+                    <Text style={styles.text}>Retake Image</Text>
+                  </TouchableOpacity>
+                </Animated.View>
+                <Animated.View style={[styles.button, { transform: [{ scale: submitScale }] }]}>
+                  <TouchableOpacity
+                    onPress={submitImage}
+                    onPressIn={() => handlePressIn(submitScale)}
+                    onPressOut={() => handlePressOut(submitScale)}
+                  >
+                    <Text style={styles.text}>Submit Image</Text>
+                  </TouchableOpacity>
+                </Animated.View>
+              </>
             ) : (
               <Animated.View style={[styles.button, { transform: [{ scale: takePictureScale }] }]}>
                 <TouchableOpacity
@@ -137,7 +198,7 @@ export default function App() {
           )}
         </View>
       </View>
-    </ImageBackground>
+    </ImageBackground >
   );
 }
 
