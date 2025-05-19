@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Image } from 'react-native'
+import { View, ImageBackground, Image } from 'react-native'
 import React from 'react'
 import { images } from "@/constants/images"
 import { Tabs } from 'expo-router'
@@ -8,7 +8,7 @@ import { icons } from '@/constants/icons'
 interface TabIconProps {
     focused: boolean;
     icon: any;
-    title: string;
+    // title: string;
     name: 'home' | 'map' | 'camera' | 'activities' | 'news'; // Required and restricted to valid values
 }
 
@@ -87,12 +87,12 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, title, name }) => {
                 source={images.highlight}
                 style={{
                     flexDirection: 'row',
-                    width: 112,
+                    width: 80,
                     height: 56,
                     marginTop: 17.5,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: 50,
+                    borderRadius: 28,
                     overflow: 'hidden',
                 }}
             >
@@ -100,14 +100,6 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, icon, title, name }) => {
                     source={icon}
                     style={style} // Apple the specific style for the icon
                 />
-                <Text
-                    style={{
-                        fontSize: 16,
-                        fontWeight: "600",
-                    }}
-                >
-                    {title}
-                </Text>
             </ImageBackground>
         )
     }
@@ -161,7 +153,7 @@ const _layout = () => {
                         <TabIcon
                             focused={focused}
                             icon={icons.home}
-                            title="Activities"
+                            // title="Activities"
                             name="activities"
                         />
                     )
@@ -176,7 +168,7 @@ const _layout = () => {
                         <TabIcon
                             focused={focused}
                             icon={icons.map}
-                            title="Map"
+                            // title="Map"
                             name="map"
                         />
                     )
@@ -191,7 +183,7 @@ const _layout = () => {
                         <TabIcon
                             focused={focused}
                             icon={icons.camera}
-                            title="Camera"
+                            // title="Camera"
                             name="camera"
                         />
                     )
@@ -206,7 +198,7 @@ const _layout = () => {
                         <TabIcon
                             focused={focused}
                             icon={icons.activities}
-                            title="Home"
+                            // title="Home"
                             name="home"
                         />
                     )
@@ -222,7 +214,7 @@ const _layout = () => {
                         <TabIcon
                             focused={focused}
                             icon={icons.news}
-                            title="News"
+                            // title="News"
                             name="news"
                         />
                     ),

@@ -2,16 +2,10 @@ import Template from '@/components/Template';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Animated, Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
-
-// Import the functions you need from the SDKs you need
+import * as Location from 'expo-location';
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getStorage, ref } from "firebase/storage";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getStorage, ref, uploadBytes, getDownloadURL, updateMetadata } from "firebase/storage";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCla7gYr0TU4W6FjrXrqoP0cuWQDjGIOVk",
   authDomain: "plasticwhere-e55a0.firebaseapp.com",
@@ -24,20 +18,21 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const storage = getStorage(app);
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [photoUri, setPhotoUri] = useState<string | null>(null); // State to store the photo URI
+  const [locationPermission, requestLocationPermission] = Location.useForegroundPermissions(); const [photoUri, setPhotoUri] = useState<string | null>(null); // State to store the photo URI
   const [image, setImage] = useState(''); // State for Firebase upload
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const cameraRef = useRef<CameraView>(null); // Reference to CameraView
   const flipScale = useRef(new Animated.Value(1)).current; // Animation scale for Flip Camera button
   const takePictureScale = useRef(new Animated.Value(1)).current; // Animation scale for Take Picture button
   const retakeScale = useRef(new Animated.Value(1)).current; // Animation scale for Retake button
   const submitScale = useRef(new Animated.Value(1)).current; // Animation scale for Submit button
-  const reverseCamera = require('../../assets/images/reverseCamera.png'); // Image for reverse camera icon
+  const reverseCamera = require('../../assets/images/reverseCamera.png'); // Reverse camera icon
+  const backgroundImage = require('../../assets/images/PLBG.png') // Background image
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -61,6 +56,20 @@ export default function App() {
     );
   }
 
+  if (!locationPermission?.granted) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.templateContainer}>
+          <Template />
+        </View>
+        <View style={styles.foregroundContainer}>
+          <Text style={styles.message}>We need your permission to access your location</Text>
+          <Button onPress={requestLocationPermission} title="grant location permission" />
+        </View>
+      </View>
+    );
+  }
+
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
@@ -71,7 +80,16 @@ export default function App() {
       return;
     }
     try {
-      console.log('Taking picture with cameraRef:', cameraRef.current);
+      // Get the current location
+      const locationResult = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+      setLocation({
+        latitude: locationResult.coords.latitude,
+        longitude: locationResult.coords.longitude,
+      });
+      console.log('Location captured:', locationResult);
+
       const photo = await cameraRef.current.takePictureAsync({ quality: 0.8 });
       console.log('Photo captured:', photo);
       if (photo && photo.uri) {
@@ -81,22 +99,37 @@ export default function App() {
         console.error('Photo or photo.uri is undefined');
       }
     } catch (error) {
-      console.error('Failed to take picture:', error);
+      console.error('Failed to take picture or get location:', error);
     }
   }
 
   async function submitImage() {
     if (image) {
       try {
-        const fileName = `https://console.firebase.google.com/u/0/project/plasticwhere-e55a0/storage/plasticwhere-e55a0.firebasestorage.app/files` // Unique file name
-        const storageRef = storage.ref(fileName); // Firebase Storage reference
-        await storageRef.putFile(image); // Upload local file
-        const downloadURL = await storageRef.getDownloadURL(); // Get URL
+        const fileName = `photos/${Date.now()}.jpg`; // Unique file name
+        const storageRef = ref(storage, fileName); // Firebase Storage reference
+        const response = await fetch(image);
+        const blob = await response.blob();
+        await uploadBytes(storageRef, blob);
+
+        // Upload metadata with location
+        const metadata = {
+          customMetadata: {
+            location: location
+              ? `Lat: ${location.latitude.toFixed(2)}, Lon: ${location.longitude.toFixed(2)}`
+              : 'Location: Unknown',
+            date: new Date().toISOString(),
+          },
+        };
+        console.log('Metadata to be set:', metadata);
+        await updateMetadata(storageRef, metadata);
+
+        const downloadURL = await getDownloadURL(storageRef); // Get URL
         console.log('Photo uploaded to Firebase:', downloadURL);
         setPhotoUri(null); // Clear photo to show camera
         setImage('');
-      }
-      catch (error) {
+        setLocation(null);
+      } catch (error) {
         console.error('Failed to upload to Firebase:', error)
       }
     }
@@ -104,6 +137,7 @@ export default function App() {
 
   function retakeImage() {
     setPhotoUri(null); // Clear photo URI to show camera again
+    setLocation(null)
   }
 
   // Animation handlers
@@ -124,7 +158,7 @@ export default function App() {
 
   return (
     <ImageBackground
-      source={require('../../assets/images/PLBG.png')} // Same image as Template.tsx
+      source={backgroundImage} // Same image as Template.tsx
       style={styles.background}
       resizeMode="cover"
       blurRadius={5} // Matches Template.tsx

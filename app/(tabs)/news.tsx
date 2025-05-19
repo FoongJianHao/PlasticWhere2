@@ -99,10 +99,9 @@ export default function news() {
                     )}
                     keyExtractor={(item, index) => index.toString()}
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingTop: 10, paddingBottom: 20 }} // Avoid overlap with tab bar
+                    contentContainerStyle={{ paddingTop: 10, paddingBottom: 280 }} // Avoid overlap with tab bar
                 />
             </View>
-            <View style={styles.footerContainer}/>
         </View>
     );
 }
@@ -127,13 +126,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         marginTop: 10, // Space below the logo/title from Template
-        zIndex: 2,
-    },
-    footerContainer: {
-        height: 60,
-        marginBottom: "100%",
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        width: 100,
         zIndex: 2,
     },
     tabContainer: {

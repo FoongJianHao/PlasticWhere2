@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import { Alert, StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import * as Location from 'expo-location'; // Use expo-location for location services
 import Template from '@/components/Template';
 
-export default function Map() {
+export default function Map({ dataEntries }) {
   const [location, setLocation] = useState(null);
   const [region, setRegion] = useState({
     latitude: 37.78825, // Default location (San Francisco)
@@ -26,7 +26,7 @@ export default function Map() {
       console.warn(err);
       return false;
     }
-  }
+  };
 
   const animateMap = (region, duration) => {
     return new Promise((resolve) => {
@@ -38,7 +38,7 @@ export default function Map() {
       }
     });
   };
-  
+
   const getCurrentLocation = async () => {
     setIsLoading(true);
     const hasPermission = await requestLocationPermission();
@@ -47,13 +47,13 @@ export default function Map() {
       setIsLoading(false);
       return;
     }
-  
+
     try {
       // Start location fetch immediately
       const locationPromise = Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Balanced,
       });
-  
+
       // Step 1: Zoom out
       await animateMap(
         {
@@ -64,12 +64,12 @@ export default function Map() {
         },
         1500
       );
-  
+
       // Wait for location fetch to complete
       const { coords } = await locationPromise;
       const { latitude, longitude } = coords;
       setLocation({ latitude, longitude });
-  
+
       // Step 2: Move to location
       await animateMap(
         {
@@ -80,7 +80,7 @@ export default function Map() {
         },
         1500
       );
-  
+
       // Step 3: Zoom in
       await animateMap(
         {
@@ -91,7 +91,7 @@ export default function Map() {
         },
         1500
       );
-  
+
       setRegion({
         latitude,
         longitude,
@@ -103,6 +103,35 @@ export default function Map() {
       Alert.alert('Error', error.message);
       setIsLoading(false);
     }
+  };
+
+  // Parse location string into coordinates
+  const parseLocation = async (locationStr) => {
+    console.log('Parsing location:', locationStr);
+    if (locationStr.startsWith('Lat: ')) {
+      const [lat, lon] = locationStr
+        .replace('Lat: ', '')
+        .replace('Lon: ', '')
+        .split(', ')
+        .map(parseFloat);
+      if (!isNaN(lat) && !isNaN(lon)) {
+        console.log('Parsed coords:', { latitude: lat, longitude: lon });
+        return { latitude: lat, longitude: lon };
+      }
+    } else {
+      // Attempt reverse geocoding for addresses (simplified)
+      try {
+        const [address] = await Location.geocodeAsync(locationStr);
+        if (address) {
+          console.log('Geocoded coords:', { latitude: address.latitude, longitude: address.longitude });
+          return { latitude: address.latitude, longitude: address.longitude };
+        }
+      } catch (error) {
+        console.warn('Geocoding failed:', error);
+      }
+    }
+    console.warn('Invalid location format, skipping:', locationStr);
+    return null;
   };
 
   // Request permission on component mount
@@ -128,6 +157,30 @@ export default function Map() {
             description="You are here"
           />
         )}
+        {dataEntries && dataEntries.length > 0 ? (
+          dataEntries.map((entry, index) => {
+            const coords = parseLocation(entry.location);
+            if (coords) {
+              return (
+                <Marker
+                  key={index}
+                  coordinate={coords}
+                  title={entry.label}
+                >
+                  <Callout>
+                    <View style={styles.calloutContainer}>
+                      <Text style={styles.calloutLabel}>{entry.label}</Text>
+                      <Text style={styles.calloutLocation}>{entry.location}</Text>
+                    </View>
+                  </Callout>
+                </Marker>
+              );
+            }
+            return null;
+          })
+        ) : (
+          <Text style={styles.noDataText}>No plastic waste data available</Text>
+        )}
       </MapView>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -141,10 +194,6 @@ export default function Map() {
           />
           <Text style={styles.getMyLocationText}>Get My Location</Text>
         </TouchableOpacity>
-        {/* <Button
-          title="Get my Location" 
-          onPress={getCurrentLocation} 
-        /> */}
       </View>
     </View>
   );
@@ -192,5 +241,33 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     width: '50%',
     borderRadius: 15,
-  }
+  },
+  calloutContainer: {
+    width: 200,
+    padding: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  calloutLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  calloutLocation: {
+    fontSize: 14,
+    color: '#666',
+  },
+  noDataText: {
+
+    alignItems: 'center',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -50 }, { translateY: -20 }],
+    color: '#fff',
+    fontSize: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 10,
+    borderRadius: 5,
+  },
 });
