@@ -1,499 +1,461 @@
-// import React from 'react';
-// import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
-// import Template from '@/components/Template';
-
-// const { width } = Dimensions.get('window');
-// const now = new Date();
-// const month = now.toLocaleString('en-US', { month: 'long' });
-// const currentYear = now.getFullYear();
-// const previousYear = currentYear - 1;
-// const pickupCount = 945; // Example pickup count, replace with actual data
-// const totalGlobalLitterReported = 283596; // Example total global litter content, replace with actual data
-// const totalGlobalLitterPickUp = 195056
-// const myMonthlyLitterReported = 43; // Example monthly litter reported, replace with actual data
-// const myMonthlyLitterPickUp = 25; // Example monthly litter pickup, replace with actual data
-
-// const months = [
-//   { name: 'Jan', days: 31 },
-//   { name: 'Feb', days: 28 },
-//   { name: 'Mar', days: 31 },
-//   { name: 'Apr', days: 30 },
-//   { name: 'May', days: 31 },
-//   { name: 'Jun', days: 30 },
-//   { name: 'Jul', days: 31 },
-//   { name: 'Aug', days: 31 },
-//   { name: 'Sep', days: 30 },
-//   { name: 'Oct', days: 31 },
-//   { name: 'Nov', days: 30 },
-//   { name: 'Dec', days: 31 },
-// ];
-
-// export default function Index() {
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.templateContainer}>
-//         <Template />
-//       </View>
-//       <View style={styles.headerContainer}>
-//         <Text style={[styles.headerText, styles.shadowEffect]} accessibilityLabel="Activities and Impact Header">
-//           Activities & Impacts
-//         </Text>
-//       </View>
-//       <View style={styles.horizontalLine} />
-//       <View style={styles.contentContainer}>
-//         <View style={styles.totalGlobalLitterContainer}>
-//           <Text style={[styles.totalGlobalLitterText, styles.shadowEffect]}>
-//             Total Global Litter Content:
-//             <Text style={styles.enlargeNumbers}>{totalGlobalLitterReported.toLocaleString()}</Text>
-//           </Text>
-//           <Text style={[styles.totalGlobalLitterText, styles.shadowEffect]}>
-//             Pick-Up:
-//             <Text style={styles.enlargeNumbers}>
-//               {totalGlobalLitterPickUp.toLocaleString()}
-//               </Text>
-//           </Text>
-//         </View>
-//         <View style={styles.overallPickupContainer}>
-//           <Text style={[styles.overallPickupText, styles.shadowEffect]}>
-//             Overall Pickup for {month} {previousYear} - {month} {currentYear}:
-//           </Text>
-//           <Text style={[styles.pickupNumber, styles.shadowEffect,]} accessibilityLabel={`Overall pickup count: ${pickupCount.toLocaleString()}`}>
-//             {pickupCount}
-//           </Text>
-//         </View>
-//         <View style={styles.barChartContainer}>
-//           <ScrollView
-//             horizontal={true}
-//             showsHorizontalScrollIndicator={false}
-//             showsVerticalScrollIndicator={false}
-//             style={styles.monthsScrollView}
-//             contentContainerStyle={styles.monthsContentContainer}
-//           >
-//             {months.map((month, index) => (
-//               <View key={index} style={styles.barContainer}>
-//                 <View
-//                   style={[
-//                     styles.bar,
-//                     {
-//                       height: (month.days / 31) * 200, // Scale height from 0 to 200 based on days (max 31)
-//                     },
-//                   ]}
-//                 />
-//                 <Text style={[styles.monthText, styles.shadowEffect]}>{month.name}</Text>
-//               </View>
-//             ))}
-//           </ScrollView>
-//         </View>
-//         <View style={styles.myMonthlyLitterContainer}>
-//           <Text style={[styles.myMonthlyLitterText, styles.shadowEffect]}>
-//             My Monthly Litter Reports:
-//             <Text style={styles.enlargeNumbers}>{myMonthlyLitterReported.toLocaleString()}</Text>
-//           </Text>
-//           <Text style={[styles.myMonthlyLitterText, styles.shadowEffect]}>Pick-up:
-//             <Text style={styles.enlargeNumbers}>{myMonthlyLitterPickUp.toLocaleString()}</Text>
-//           </Text>
-//         </View>
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   templateContainer: {
-//     position: 'absolute', // THIS IS IMPORTANT TO MAKE THE TEMPLATE STAY IN THE BACKGROUND
-//     top: 0,
-//     left: 0,
-//     right: 0,
-//     bottom: 0, // Extend to the bottom of the screen
-//     backgroundColor: 'transparent', // Keep transparent
-//     zIndex: 1, // Ensure Template is below the text
-//   },
-//   headerContainer: {
-//     marginTop: 120, // Space below the logo/title from Template
-//     zIndex: 2,
-//     // backgroundColor: 'rgba(226, 130, 130, 0.75)', // Temporary
-//   },
-//   horizontalLine: {
-//     height: 4, // Slightly thicker for better visibility
-//     backgroundColor: 'rgba(30, 30, 30, 0.9)', // Changed to black
-//     width: '100%',
-//     zIndex: 2, // Ensure line is above the Template
-//   },
-//   contentContainer: {
-//     flex: 1,
-//     zIndex: 2,
-//     // backgroundColor: 'rgba(143, 65, 65, 0.75)',
-//   },
-//   totalGlobalLitterContainer: {
-//     flex: 1.5,
-//     justifyContent: 'center',
-//     // backgroundColor: 'rgba(190, 74, 74, 0.75)',
-//   },
-//   overallPickupContainer: {
-//     flex: 1.5,
-//     zIndex: 2,
-//     // backgroundColor: 'rgba(78, 38, 94, 0.75)',
-//   },
-//   barChartContainer: {
-//     flex: 3,
-//     zIndex: 2,
-//     // backgroundColor: 'rgba(182, 120, 125, 0.75)',
-//     justifyContent: 'flex-end',
-//   },
-//   monthsScrollView: {
-//     flexGrow: 0,
-//   },
-//   monthsContentContainer: {
-//     alignItems: 'center',
-//   },
-//   barContainer: {
-//     width: width / 6, // Show 5 bars at a time
-//     paddingHorizontal: 10,
-//     alignItems: 'center',
-//     justifyContent: 'flex-end', // Align bars to the bottom
-//     height: 200, // Fixed height for the chart area
-//   },
-//   bar: {
-//     width: 30, // Fixed width for each bar
-//     backgroundColor: 'rgba(37, 37, 37, 0.95)', // White with some transparency
-//     borderRadius: 10, // Rounded corners for bars
-//     marginBottom: 5, // Space between bar and label
-//   },
-//   monthItem: {
-//     width: width / 6, // Show 5 months at a time
-//     paddingHorizontal: 10,
-//     paddingVertical: 5,
-//     alignItems: 'center',
-//     marginBottom: 50,
-//   },
-//   monthText: {
-//     color: 'white',
-//     fontSize: 20,
-//     textAlign: 'center',
-//     marginBottom: 30,
-//   },
-//   myMonthlyLitterContainer: {
-//     flex: 2.5,
-//     zIndex: 2,
-//     // backgroundColor: 'rgba(94, 75, 182, 0.75)',
-//   },
-//   headerText: {
-//     color: 'white',
-//     fontSize: 36,
-//     fontWeight: '600',
-//     marginBottom: 10,
-//     marginLeft: 20,
-//   },
-//   totalGlobalLitterText: {
-//     color: 'white',
-//     fontSize: 20,
-//     alignSelf: 'flex-end',
-//     marginRight: 40,
-//   },
-//   overallPickupText: {
-//     color: 'white',
-//     fontSize: 20,
-//     alignSelf: 'center',
-//     marginTop: 15,
-//   },
-//   pickupNumber: {
-//     color: 'white',
-//     fontSize: width * 0.12,
-//     fontWeight: 'bold',
-//     alignSelf: 'center',
-//     marginTop: width * 0.025,
-//   },
-//   myMonthlyLitterText: {
-//     color: 'white',
-//     fontSize: width * 0.05,
-//     alignSelf: 'flex-end',
-//     marginRight: 80,
-//     marginTop: 5,
-//   },
-//   shadowEffect: {
-//     textShadowColor: 'rgba(0, 0, 0, 0.8)', // Add shadow for readability
-//     textShadowOffset: { width: 1.5, height: 1.5 },
-//     textShadowRadius: 5,
-//   },
-//   enlargeNumbers: {
-//     fontSize: 28,
-//     fontWeight: '500',
-//     color: 'white'
-//   }
-// });
-
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
+// Import React Native components for UI rendering and interaction
+import { Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+// Import React hooks and context utilities
+import React, { createContext, useContext, useEffect, useState } from 'react';
+// Import custom Template component for background or shared UI
 import Template from '@/components/Template';
+// Import Firebase Storage functions for fetching and deleting images
+import { getStorage, ref, listAll, getDownloadURL, getMetadata, deleteObject } from 'firebase/storage';
+// Import expo-location for reverse geocoding
+import * as Location from 'expo-location';
+// Import BlurView for modal background blur effect
+import { BlurView } from 'expo-blur';
+// Import custom data context hook for managing shared state
+import { useData } from '@/context/dataContext';
 
-export default function Reports() {
-    return (
-        <View >
-            <View>
-                <Template />
-            </View>
+// Get screen height for responsive design
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+// Define TypeScript interface for data entries
+interface DataEntry {
+  imageUri: string; // URI of the image
+  date: string; // Formatted date string
+  location: string; // Location string (address or coordinates)
+  label: string; // Label for the entry (e.g., "Plastic Waste")
+  timestamp?: number; // Optional timestamp for sorting
+}
+
+// Initialize Firebase Storage
+const storage = getStorage();
+
+// Define DataTab component to render individual data entries
+const DataTab: React.FC<DataEntry & { onPress: () => void; onDelete: () => void }> = ({
+  imageUri,
+  date,
+  location,
+  label,
+  onPress,
+  onDelete,
+}) => {
+  return (
+    // Touchable container for the data entry
+    <TouchableOpacity onPress={onPress} style={styles.tabContainer}>
+      <Image source={{ uri: imageUri }} style={styles.dataImage} /> {/* Display image */}
+      <View style={styles.textContainer}>
+        <View style={styles.leftText}>
+          <Text style={styles.date} numberOfLines={1}>
+            {date} {/* Display date */}
+          </Text>
+          <View style={styles.rightText}>
+            <Text style={styles.label}>{label}</Text> {/* Display label */}
+          </View>
+          <Text style={styles.location} numberOfLines={2}>
+            {location} {/* Display location, limited to 2 lines */}
+          </Text>
         </View>
-    );
+      </View>
+      {/* Delete button with cross icon */}
+      <TouchableOpacity style={styles.crossIconContainer} onPress={onDelete}>
+        <Text style={styles.crossIconText}>X</Text>
+      </TouchableOpacity>
+    </TouchableOpacity>
+  );
 };
 
-// import { View, Text, ImageBackground, Image, Dimensions } from 'react-native';
-// import React from 'react';
-// import { images } from "@/constants/images";
-// import { Tabs } from 'expo-router';
-// import { icons } from '@/constants/icons';
+// Define the main Data component
+export default function Data() {
+  // Access data entries and loading state from DataContext
+  const { dataEntries, setDataEntries, setIsLoading } = useData();
+  // Hook to manage foreground location permissions
+  const [locationPermission, requestLocationPermission] = Location.useForegroundPermissions();
+  // State to control modal visibility
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  // State to store the selected item for the modal
+  const [selectedItem, setSelectedItem] = useState<DataEntry | null>(null);
 
-// // Get screen width to calculate tab bar width
-// const { width: screenWidth } = Dimensions.get('window');
+  // Effect to fetch images from Firebase Storage when component mounts or locationPermission changes
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        setIsLoading(true); // Set loading state to true
+        // Check if location permission is granted
+        if (!locationPermission?.granted) {
+          const { status } = await requestLocationPermission();
+          if (status !== 'granted') {
+            console.error('Location permission denied');
+            // Fetch images without geocoding if permission is denied
+            const photosRef = ref(storage, 'photos');
+            const result = await listAll(photosRef);
+            const entries = await Promise.all(
+              result.items.map(async (itemRef) => {
+                const url = await getDownloadURL(itemRef); // Get image URL
+                const metadata = await getMetadata(itemRef); // Get metadata
+                const timestamp = parseInt(itemRef.name.replace('.jpg', ''), 10); // Extract timestamp from file name
+                const isoDate = metadata.customMetadata?.date || new Date(timestamp).toISOString(); // Use metadata date or fallback to timestamp
+                const date = new Date(isoDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                }); // Format date
+                const location = metadata.customMetadata?.location || 'Location: Unknown'; // Use metadata location or default
+                return {
+                  imageUri: url,
+                  date,
+                  location,
+                  label: 'Plastic Waste', // Hardcoded label
+                  timestamp,
+                };
+              })
+            );
+            // Sort entries by timestamp in descending order (newest first)
+            entries.sort((a, b) => {
+              const dateA = new Date(a.timestamp || 0);
+              const dateB = new Date(b.timestamp || 0);
+              return dateB.getTime() - dateA.getTime();
+            });
+            setDataEntries(entries); // Update context with fetched entries
+            setIsLoading(false);
+            return;
+          }
+        }
 
-// // Define the type for TabIcon props
-// interface TabIconProps {
-//   focused: boolean;
-//   icon: any;
-//   title: string;
-//   name: 'home' | 'map' | 'camera' | 'activities' | 'news';
-// }
+        // Fetch images with geocoding if location permission is granted
+        const photosRef = ref(storage, 'photos');
+        const result = await listAll(photosRef);
+        const entries = await Promise.all(
+          result.items.map(async (itemRef) => {
+            const url = await getDownloadURL(itemRef); // Get image URL
+            const metadata = await getMetadata(itemRef); // Get metadata
+            const timestamp = parseInt(itemRef.name.replace('.jpg', ''), 10); // Extract timestamp
+            const isoDate = metadata.customMetadata?.date || new Date(timestamp).toISOString(); // Use metadata date or fallback
+            const date = new Date(isoDate).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }); // Format date
+            let address = metadata.customMetadata?.location || 'Location: Unknown'; // Default location
+            // Parse location if it contains coordinates
+            if (address.startsWith('Lat: ')) {
+              const [lat, lon] = address
+                .replace('Lat: ', '')
+                .replace('Lon: ', '')
+                .split(', ')
+                .map(parseFloat);
+              if (!isNaN(lat) && !isNaN(lon)) {
+                // Perform reverse geocoding to get address
+                const geocodeResult = await Location.reverseGeocodeAsync({ latitude: lat, longitude: lon });
+                const result = geocodeResult[0];
+                address = result
+                  ? `${result.street || ''}${result.street ? ', ' : ''}${result.city || ''}${
+                      result.city ? ', ' : ''
+                    }${result.country || ''}`.trim()
+                  : 'Address Not Found'; // Format address or fallback
+              }
+            }
+            return {
+              imageUri: url,
+              date,
+              location: address,
+              label: 'Plastic Waste',
+              timestamp,
+            };
+          })
+        );
 
-// // Define styles for each icon in focused and unfocused states
-// const iconStyles = {
-//   home: {
-//     unfocused: {
-//       width: 36,
-//       height: 36,
-//       tintColor: 'white',
-//     },
-//     focused: {
-//       width: 36,
-//       height: 36,
-//       tintColor: 'black',
-//     },
-//   },
-//   map: {
-//     unfocused: {
-//       width: 36,
-//       height: 36,
-//       tintColor: 'white',
-//     },
-//     focused: {
-//       width: 36,
-//       height: 36,
-//       tintColor: 'black',
-//     },
-//   },
-//   camera: {
-//     unfocused: {
-//       width: 36,
-//       height: 36,
-//       tintColor: 'white',
-//     },
-//     focused: {
-//       width: 36,
-//       height: 36,
-//       tintColor: 'black',
-//     },
-//   },
-//   activities: {
-//     unfocused: {
-//       width: 50,
-//       height: 50,
-//       tintColor: 'white',
-//     },
-//     focused: {
-//       width: 50,
-//       height: 50,
-//       tintColor: 'black',
-//     },
-//   },
-//   news: {
-//     unfocused: {
-//       width: 36,
-//       height: 36,
-//       tintColor: 'white',
-//     },
-//     focused: {
-//       width: 36,
-//       height: 36,
-//       tintColor: 'black',
-//     },
-//   },
-// };
+        // Sort entries by timestamp in descending order (newest first)
+        entries.sort((a, b) => {
+          const dateA = new Date(a.timestamp || 0);
+          const dateB = new Date(b.timestamp || 0);
+          return dateB.getTime() - dateA.getTime();
+        });
 
-// const TabIcon: React.FC<TabIconProps> = ({ focused, icon, title, name }) => {
-//   const style = focused ? iconStyles[name].focused : iconStyles[name].unfocused;
+        console.log('Fetched entries:', entries); // Log fetched data for debugging
+        setDataEntries(entries); // Update context with fetched entries
+        setIsLoading(false); // Set loading state to false
+      } catch (error) {
+        console.error('Failed to fetch images or geocode:', error);
+        setIsLoading(false);
+      }
+    };
+    fetchImages(); // Run fetchImages on mount or when locationPermission changes
+  }, [locationPermission]);
 
-//   if (focused) {
-//     return (
-//       <View
-//         style={{
-//           flex: 1,
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//           height: 56, // Match tab bar height
-//           width: '100%',
-//         }}
-//       >
-//         <ImageBackground
-//           source={images.highlight}
-//           style={{
-//             position: 'absolute',
-//             left: -((screenWidth - 40) / 5) * (name === 'activities' ? 0 : name === 'map' ? 1 : name === 'camera' ? 2 : name === 'home' ? 3 : 4), // Adjust position based on tab index
-//             width: screenWidth - 40, // Match tab bar width (screenWidth - marginHorizontal)
-//             height: 56, // Match tab bar height
-//             justifyContent: 'center',
-//             alignItems: 'center',
-//             borderRadius: 50,
-//             overflow: 'hidden',
-//             zIndex: -1, // Behind the icon and text
-//           }}
-//           resizeMode="stretch" // Stretch the image to fit the dimensions
-//         />
-//         <View
-//           style={{
-//             flexDirection: 'row',
-//             justifyContent: 'center',
-//             alignItems: 'center',
-//             paddingHorizontal: 10,
-//           }}
-//         >
-//           <Image
-//             source={icon}
-//             style={style}
-//           />
-//           <Text
-//             style={{
-//               fontSize: 16,
-//               fontWeight: "600",
-//               color: 'black', // Ensure text is visible over the highlight
-//               marginLeft: 5,
-//             }}
-//           >
-//             {title}
-//           </Text>
-//         </View>
-//       </View>
-//     );
-//   }
-//   return (
-//     <View
-//       style={{
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         marginTop: 16,
-//         backgroundColor: 'transparent',
-//         borderRadius: 50,
-//       }}
-//     >
-//       <Image
-//         source={icon}
-//         style={style}
-//       />
-//     </View>
-//   );
-// };
+  // Function to delete an entry from Firebase Storage and update context
+  const deleteEntry = async (entry: DataEntry) => {
+    try {
+      const fileRef = ref(storage, `photos/${entry.timestamp}.jpg`); // Reference to the file
+      await deleteObject(fileRef); // Delete file from Firebase
+      console.log(`Deleted image from Firebase: ${entry.timestamp}.jpg`);
+      // Update context by filtering out the deleted entry
+      setDataEntries((prevEntries) => prevEntries.filter((item) => item.timestamp !== entry.timestamp));
+    } catch (error) {
+      console.error('Failed to delete entry:', error);
+    }
+  };
 
-// const _layout = () => {
-//   return (
-//     <Tabs
-//       screenOptions={{
-//         tabBarShowLabel: false,
-//         tabBarItemStyle: {
-//           width: "100%",
-//           height: "100%",
-//           justifyContent: "center",
-//           alignItems: "center",
-//         },
-//         tabBarStyle: {
-//           backgroundColor: "#0f0d23",
-//           borderRadius: 50,
-//           marginHorizontal: 20,
-//           marginBottom: 36,
-//           height: 56,
-//           position: "absolute",
-//           overflow: "hidden",
-//           borderWidth: 1,
-//           borderColor: "#0f0d23",
-//         },
-//       }}
-//     >
-//       <Tabs.Screen
-//         name="activities"
-//         options={{
-//           title: 'Activities',
-//           headerShown: false,
-//           tabBarIcon: ({ focused }) => (
-//             <TabIcon
-//               focused={focused}
-//               icon={icons.home}
-//               title="Activities"
-//               name="activities"
-//             />
-//           ),
-//         }}
-//       />
-//       <Tabs.Screen
-//         name="map"
-//         options={{
-//           title: 'Map',
-//           headerShown: false,
-//           tabBarIcon: ({ focused }) => (
-//             <TabIcon
-//               focused={focused}
-//               icon={icons.map}
-//               title="Map"
-//               name="map"
-//             />
-//           ),
-//         }}
-//       />
-//       <Tabs.Screen
-//         name="camera"
-//         options={{
-//           title: 'Camera',
-//           headerShown: false,
-//           tabBarIcon: ({ focused }) => (
-//             <TabIcon
-//               focused={focused}
-//               icon={icons.camera}
-//               title="Camera"
-//               name="camera"
-//             />
-//           ),
-//         }}
-//       />
-//       <Tabs.Screen
-//         name="index"
-//         options={{
-//           title: 'Home',
-//           headerShown: false,
-//           tabBarIcon: ({ focused }) => (
-//             <TabIcon
-//               focused={focused}
-//               icon={icons.activities}
-//               title="Home"
-//               name="home"
-//             />
-//           ),
-//         }}
-//       />
-//       <Tabs.Screen
-//         name="news"
-//         options={{
-//           title: 'News',
-//           headerShown: false,
-//           tabBarIcon: ({ focused }) => (
-//             <TabIcon
-//               focused={focused}
-//               icon={icons.news}
-//               title="News"
-//               name="news"
-//             />
-//           ),
-//         }}
-//       />
-//     </Tabs>
-//   );
-// };
+  // Define ModalView component for displaying selected item details
+  const ModalView = ({ item, onClose }) => {
+    return (
+      <View style={styles.modalContainer}>
+        <BlurView intensity={50} tint="light" style={StyleSheet.absoluteFill} /> {/* Blur background */}
+        <View style={styles.modalContent}>
+          <Image source={{ uri: item.imageUri }} style={styles.modalImage} /> {/* Display image */}
+          <View style={styles.modalTextContainer}>
+            <Text style={styles.modalLabel}>{item.label}</Text> {/* Display label */}
+            <Text style={styles.modalDateLabel}>Date:</Text>
+            <Text style={styles.modalDateValue}>{item.date}</Text> {/* Display date */}
+            <Text style={styles.modalLocationLabel}>Location:</Text>
+            <Text style={styles.modalLocationValue}>{item.location}</Text> {/* Display location */}
+          </View>
+        </View>
+        {/* Close button */}
+        <TouchableOpacity style={styles.closeButtonContainer} onPress={onClose}>
+          <Text style={styles.closeButtonText}>Close</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
-// export default _layout;
+  return (
+    // Main container for the screen
+    <View style={styles.container}>
+      <View style={styles.templateContainer}>
+        <Template /> {/* Render Template as background */}
+      </View>
+      <View style={styles.headerContainer}>
+        <Text
+          style={[styles.headerText, styles.shadowEffect]} // Apply header text style and shadow
+          accessibilityLabel="Data and Images Header" // Accessibility label
+        >
+          Reports
+        </Text>
+      </View>
+      <View style={styles.horizontalLine} /> {/* Horizontal separator */}
+      <View style={styles.contentContainer}>
+        <FlatList
+          data={dataEntries} // Data source from context
+          renderItem={({ item }) => (
+            <DataTab
+              imageUri={item.imageUri}
+              date={item.date}
+              location={item.location}
+              label={item.label}
+              onPress={() => {
+                setSelectedItem(item); // Set selected item for modal
+                setIsModalVisible(true); // Show modal
+              }}
+              onDelete={() => deleteEntry(item)} // Delete entry on press
+            />
+          )}
+          keyExtractor={(item) => item.timestamp?.toString() || Math.random().toString()} // Unique key for each item
+          showsVerticalScrollIndicator={false} // Hide scroll indicator
+          contentContainerStyle={{ paddingTop: 10, paddingBottom: 280 }} // Padding for content
+        />
+      </View>
+      {/* Render modal if visible */}
+      {isModalVisible && selectedItem && (
+        <ModalView
+          item={selectedItem}
+          onClose={() => {
+            setIsModalVisible(false); // Hide modal
+            setSelectedItem(null); // Clear selected item
+          }}
+        />
+      )}
+    </View>
+  );
+}
+
+// Define styles using StyleSheet for performance
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // Fill entire screen
+  },
+  templateContainer: {
+    position: 'absolute', // Position Template in background
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'transparent', // Transparent to show Template
+    zIndex: 1, // Lower z-index for background
+  },
+  headerContainer: {
+    marginTop: 120, // Space below Template's header
+    zIndex: 2, // Above Template
+  },
+  contentContainer: {
+    marginTop: 10, // Space below header
+    zIndex: 2, // Above Template
+  },
+  tabContainer: {
+    flexDirection: 'row', // Arrange image and text horizontally
+    height: SCREEN_HEIGHT * 0.2, // Responsive height
+    marginHorizontal: 16, // Side margins
+    marginTop: 16, // Top margin
+    borderRadius: 20, // Rounded corners
+    backgroundColor: 'rgba(81, 81, 81, 0.8)', // Semi-transparent gray background
+    padding: 12, // Internal padding
+    shadowColor: '#000', // Shadow for depth
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3, // Shadow for Android
+  },
+  headerText: {
+    color: 'white', // White text
+    fontSize: 36, // Large font
+    fontWeight: '600', // Bold
+    marginBottom: 10, // Space below
+    marginLeft: 20, // Left margin
+  },
+  horizontalLine: {
+    height: 4, // Thick line
+    backgroundColor: 'rgba(30, 30, 30, 0.9)', // Dark with slight transparency
+    width: '100%', // Full width
+    zIndex: 2, // Above Template
+  },
+  dataImage: {
+    width: '40%', // 40% of container width
+    height: '100%', // Fill container height
+    borderRadius: 15, // Rounded corners
+    resizeMode: 'cover', // Cover image
+  },
+  textContainer: {
+    flex: 1, // Fill remaining space
+    flexDirection: 'column', // Stack text vertically
+    paddingLeft: 12, // Space from image
+    justifyContent: 'space-between', // Space text evenly
+  },
+  leftText: {
+    flex: 1, // Fill container
+    justifyContent: 'space-between', // Space text vertically
+  },
+  rightText: {
+    justifyContent: 'center', // Center label vertically
+    alignItems: 'flex-end', // Align label to right
+  },
+  date: {
+    fontSize: 16, // Medium font
+    fontWeight: 'bold', // Bold
+    color: 'white', // White text
+  },
+  location: {
+    fontSize: 14, // Smaller font
+    color: 'white', // White text
+    lineHeight: 20, // Line spacing
+  },
+  label: {
+    fontSize: 26, // Large font
+    fontWeight: '600', // Bold
+    color: 'white', // White text
+  },
+  shadowEffect: {
+    textShadowColor: 'rgba(0, 0, 0, 0.8)', // Black shadow
+    textShadowOffset: { width: 1.5, height: 1.5 }, // Shadow offset
+    textShadowRadius: 5, // Shadow blur
+  },
+  modalContainer: {
+    ...StyleSheet.absoluteFillObject, // Fill entire screen
+    justifyContent: 'center', // Center content
+    alignItems: 'center', // Center content
+    zIndex: 10, // Above all other content
+  },
+  modalContent: {
+    backgroundColor: 'rgba(171, 171, 171, 0.8)', // Semi-transparent gray
+    borderRadius: 25, // Rounded corners
+    padding: 25, // Internal padding
+    width: '85%', // 85% of screen width
+    height: '70%', // 70% of screen height
+    marginBottom: 90, // Space for close button
+    justifyContent: 'space-between', // Space content
+    alignItems: 'center', // Center content
+    overflow: 'hidden', // Clip content
+    shadowColor: '#000', // Shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5, // Shadow for Android
+  },
+  modalImage: {
+    width: '100%', // Fill container
+    height: '70%', // 70% of modal height
+    borderRadius: 10, // Rounded corners
+    overflow: 'hidden', // Clip image
+  },
+  modalTextContainer: {
+    padding: 15, // Internal padding
+    maxHeight: '30%', // Limit text area height
+  },
+  modalLabel: {
+    fontSize: 40, // Large font
+    fontWeight: 'bold', // Bold
+    fontFamily: 'sans-serif', // Font family
+    color: 'rgb(54, 103, 43)', // Green color
+    textAlign: 'center', // Center text
+    marginBottom: 15, // Space below
+    textShadowColor: 'rgba(0, 0, 0, 0.3)', // Light shadow
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+  },
+  modalDateLabel: {
+    fontSize: 16, // Medium font
+    fontWeight: '600', // Bold
+    color: '#444', // Dark gray
+    textAlign: 'center', // Center text
+    marginBottom: 2, // Space below
+  },
+  modalDateValue: {
+    fontSize: 18, // Slightly larger font
+    color: '#333', // Darker gray
+    textAlign: 'center', // Center text
+    marginBottom: 10, // Space below
+  },
+  modalLocationLabel: {
+    fontSize: 16, // Medium font
+    fontWeight: '600', // Bold
+    color: '#444', // Dark gray
+    textAlign: 'center', // Center text
+    marginBottom: 2, // Space below
+  },
+  modalLocationValue: {
+    fontSize: 18, // Slightly larger font
+    color: '#333', // Darker gray
+    textAlign: 'center', // Center text
+  },
+  closeButtonContainer: {
+    position: 'absolute', // Position at bottom
+    bottom: 120, // Offset from bottom
+    alignSelf: 'center', // Center horizontally
+    backgroundColor: '#E98787', // Light red background
+    padding: 12, // Padding
+    borderRadius: 12, // Rounded corners
+    shadowColor: '#000', // Shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5, // Shadow for Android
+  },
+  closeButtonText: {
+    color: 'white', // White text
+    fontSize: 18, // Medium font
+    fontWeight: 'bold', // Bold
+    textAlign: 'center', // Center text
+  },
+  crossIconContainer: {
+    position: 'absolute', // Position in top-right corner
+    top: 10,
+    right: 10,
+    backgroundColor: 'rgba(255, 33, 33, 0.6)', // Semi-transparent red
+    borderRadius: 12, // Rounded corners
+    width: 24, // Fixed size
+    height: 24,
+    justifyContent: 'center', // Center icon
+    alignItems: 'center', // Center icon
+  },
+  crossIconText: {
+    color: 'white', // White text
+    fontSize: 16, // Medium font
+    fontWeight: 'bold', // Bold
+  },
+});

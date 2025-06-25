@@ -42,6 +42,13 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "@react-native-firebase/app",
+        {
+          "androidPackageName": "com.plasticwhere",
+          "iosBundleId": "com.plasticwhere"
+        }
       ]
     ],
     "experiments": {
